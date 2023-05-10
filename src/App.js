@@ -41,6 +41,7 @@ function App(props) {
   .then(data => console.log(data)
   )
   .catch(error => console.error(error));
+  setShowAddForm(false)
 
     }
 

@@ -50,7 +50,7 @@ function App(props) {
 
   return (
     <div className="App px-5 py-2">
-      <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
+      <div className='flex flex-col items-center justify-center bg-gray-100'>
         
       <div className="flex items-center">
         <PhoneBookIcon />

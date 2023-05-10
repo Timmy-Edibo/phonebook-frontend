@@ -10,6 +10,17 @@ const [theContact, setTheContact]= useState([])
       .then(data => setTheContact(data.data))
       .catch(error => console.error(error));
   }, []);
+  const handleDeleteContact = (id) => {
+    fetch(`https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/delete/${id}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(data => {
+        const updatedContacts = theContact.filter(contact => contact.id !== id);
+        setTheContact(updatedContacts);
+      })
+      .catch(error => console.error(error));
+  };
   return (
     <>
     
@@ -20,7 +31,7 @@ const [theContact, setTheContact]= useState([])
       <div className="flex flex-col">
         <div className="flex items-center justify-between mb-2">
             <h3 className="text-3xl font-bold">{contact.firstname} {contact.lastname}</h3>
-            <button  
+            <button  onClick={() => handleDeleteContact(contact.id)} 
             className="bg-red-500 rounded-lg w-8 h-8 flex items-center justify-center ml-auto">
               <BasketIcon className="w-4 h-4 text-white" />
             </button>

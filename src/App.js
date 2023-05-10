@@ -15,16 +15,18 @@ function App(props) {
       lastName: 'Doe',
       phone_number: '08012345678',
     }
-  ]);
-
+  ])
   function handleSearchChange(event) {
     setSearchValue(event.target.value);
   }
   const handleAddContact = () => {
     setShowAddForm(true);
   }
-    const closemodal=()=>{
-      fetch('https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/create', {
+    const closemodal=(e)=>{
+      e.preventDefault()
+      console.log("---->", contacts)
+      fetch('https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/create', 
+      {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -67,11 +69,11 @@ function App(props) {
                 <form htmlFor="addContact" className="flex flex-col items-center justify-center">
                   <div className="flex flex-col ">
                     <label htmlFor="name" className="text-blue-500">First Name</label>
-                    <input type="text" name="name" id="name" placeholder="Enter first Name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.firstName} onChange={(e)=> setContacts({...Contact, firstName:e.target.value})} />
+                    <input type="text" name="name" id="name" placeholder="Enter first Name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.firstName} onChange={(e)=> setContacts({...contacts, firstName:e.target.value})} />
                   </div>
                   <div className="flex flex-col ">
                     <label htmlFor="name" className="text-blue-500">Last Name</label>
-                    <input type="text" name="name" id="name" placeholder="Enter individual's name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.lastName} onChange={(e)=> setContacts({...Contact, lastName:e.target.value})} />
+                    <input type="text" name="name" id="name" placeholder="Enter individual's name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.lastName} onChange={(e)=> setContacts({...contacts, lastName:e.target.value})} />
                   </div>
                   <div className="flex flex-col ">
                     <label htmlFor="phone" className="text-blue-500">Phone number</label>

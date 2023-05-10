@@ -13,7 +13,7 @@ function App(props) {
     {
       firstName: 'John',
       lastName: 'Doe',
-      phone_number: '08012345678',
+      phone_number: 123,
     }
   ])
   function handleSearchChange(event) {
@@ -32,8 +32,8 @@ function App(props) {
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    firstName: contacts.firstName,
-    lastName: contacts.lastName,
+    firstname: contacts.firstName,
+    lastname: contacts.lastName,
     phone_number: contacts.phone_number
   })
 })
@@ -49,18 +49,18 @@ function App(props) {
   }
 
   return (
-    <div className="App">
+    <div className="App px-5 py-2">
       <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
         
       <div className="flex items-center">
         <PhoneBookIcon />
-        <h1 className="text-5xl font-bold ml-4">Phone Book App</h1>
+        <h1 className=" text-2xl md:text-5xl font-bold ml-4">Phone Book App</h1>
       </div>
 
         <div className="my-4 w-full max-w-screen-lg text-lg font-bold">
           <div className="flex justify-between items-center">
-            <div className="text-3xl font-bold">Contacts</div>
-            <div className="bg-blue-500 rounded-md px-4 py-2 text-white">
+            <div className="text-xl md:text-3xl font-bold">Contacts</div>
+            <div className="bg-blue-500 rounded-md px-2 md:px-4 py-2 text-white">
               <AddButton  handleAddContact={handleAddContact} />
             </div>
             {showAddForm &&
@@ -77,7 +77,7 @@ function App(props) {
                   </div>
                   <div className="flex flex-col ">
                     <label htmlFor="phone" className="text-blue-500">Phone number</label>
-                    <input type="tel" name="phone" id="phone" value={contacts.phone_number} onChange={(e)=>setContacts({...contacts, phone_number:e.target.value})} placeholder="Enter individual's number" className=" w-full shadow rounded-xl px-7 py-3" />
+                    <input type="number" name="phone" id="phone" value={contacts.phone_number} onChange={(e)=>setContacts({...contacts, phone_number:e.target.value})} placeholder="Enter individual's number" className=" w-full shadow rounded-xl px-7 py-3" />
                   </div>
                   <button onClick={closemodal} className="bg-blue-500 px-5 py-2 my-5 rounded-md text-white" >Save </button>
                 </form>

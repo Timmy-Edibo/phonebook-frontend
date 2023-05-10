@@ -2,7 +2,7 @@ import React from 'react';
 
 function SearchButton(props) {
   return (
-    <div className="relative">
+    <div className="">
       <input
         type="text"
         className="w-full h-12 px-4 pr-12 text-gray-700 placeholder-gray-500 bg-white border border-black rounded-md shadow-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300"

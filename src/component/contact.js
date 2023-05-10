@@ -26,6 +26,14 @@ const [theContact, setTheContact]= useState([])
     
     <div>
       {theContact && theContact.map((contact) => {
+        const phoneNumberArray = contact.phone_number.split('');
+  
+        // Insert a hyphen after every 3 digits
+        phoneNumberArray.splice(3, 0, '-');
+        phoneNumberArray.splice(7, 0, '-');
+        
+        // Join the array back into a string
+        const formattedPhoneNumber = phoneNumberArray.join('');
         return (
           <div key={contact.id} className="bg-white rounded-lg shadow-2xl my-1 p-4">
       <div className="flex flex-col">
@@ -38,7 +46,7 @@ const [theContact, setTheContact]= useState([])
         </div>
         <div className="flex items-center mb-2">
             <span className="mr-2"><PhoneCallIcon /></span>
-            <h3 className="text-gray-600">{contact.phone_number}</h3>
+            <h3 className="text-gray-600">{formattedPhoneNumber}</h3>
         </div>
       </div>
           </div>

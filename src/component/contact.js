@@ -12,7 +12,7 @@ const [isfilter, setIsfilter] = useState([])
       .then(response => response.json())
       .then(data => setTheContact(data.data))
       .catch(error => console.error(error));
-  }, []);
+  }, [ theContact]);
   const handleDeleteContact = (id) => {
     fetch(`https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/delete/${id}`, {
       method: 'DELETE'
@@ -145,7 +145,7 @@ const [isfilter, setIsfilter] = useState([])
 }
     
     <div>
-      {isfilter === " "? theContact.map((contact) => {
+      { isfilter === 0 || searchValue===" " ?  theContact.map((contact) => {
         const phoneNumberArray = contact.phone_number.split('');
   
         // Insert a hyphen after every 3 digits
@@ -176,7 +176,8 @@ const [isfilter, setIsfilter] = useState([])
       </div>
           </div>
         )
-      }):
+      })
+      :
       
       isfilter.map((contact) => {
         const phoneNumberArray = contact.phone_number.split('');

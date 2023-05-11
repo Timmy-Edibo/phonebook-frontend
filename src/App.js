@@ -118,13 +118,13 @@ function App(props) {
         </div>
 
 
-          <div className="my-4 w-full max-w-screen-lg rounded-md shadow-md border-black">
+          {/* <div className="my-4 w-full max-w-screen-lg rounded-md shadow-md border-black">
             <SearchButton 
               onChange={handleSearch} 
               value={searchValue} 
               // onClick={handleSearch} 
             />
-          </div>
+          </div> */}
 
 
 

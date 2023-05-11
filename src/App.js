@@ -9,6 +9,7 @@ import { ReactComponent as PhoneBookIcon } from './assets/phonebook.svg';
 function App(props) {
   const [searchValue, setSearchValue] = useState('');
   const [showAddForm, setShowAddForm] = useState(false); //
+  const [err, seterr]= useState("")
   const [contacts, setContacts] = useState([
     {
       firstName: 'John',
@@ -25,6 +26,13 @@ function App(props) {
   }
     const closemodal=(e)=>{
       e.preventDefault()
+      if (contacts.phone_number.length !== 10) {
+        seterr("Phone number must be 10 digits")
+        return
+      }
+      else{
+        seterr("")
+      }
       console.log("---->", contacts)
       fetch('https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/create', 
       {
@@ -122,7 +130,7 @@ function App(props) {
 
 
         <div className="my-4 w-full max-w-screen-lg">
-          <Contact contacts={contacts} isEdit={isEdit} closemodal={closemodal} setIsedit={setIsedit} setContacts={setContacts} showAddForm={showAddForm} setShowAddForm={setShowAddForm} />
+          <Contact contacts={contacts} isEdit={isEdit} err={err} closemodal={closemodal} setIsedit={setIsedit} setContacts={setContacts} showAddForm={showAddForm} setShowAddForm={setShowAddForm} />
         </div>
 
       </div>

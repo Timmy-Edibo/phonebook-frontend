@@ -3,7 +3,7 @@ import { ReactComponent as PhoneCallIcon } from '../assets/phonecall.svg';
 import { useState, useEffect } from 'react';
 import { AiOutlineEdit} from 'react-icons/ai';
 
-function Contact({contacts, setIsedit,isEdit,closemodal, setContacts, showAddForm, setShowAddForm}) {
+function Contact({contacts, setIsedit,isEdit,closemodal, err, setContacts, showAddForm, setShowAddForm}) {
 const [theContact, setTheContact]= useState([])
 const [searchValue, setSearchValue] = useState('');
   useEffect(() => {
@@ -54,6 +54,7 @@ const [searchValue, setSearchValue] = useState('');
         phone_number: contactToEdit.phone_number,
       });
   }
+  
   }
 
   const handleSubmit = (e , id) => {
@@ -124,19 +125,20 @@ const [searchValue, setSearchValue] = useState('');
     </div>
     {showAddForm &&
             <div className="fixed w-full h-full inset-0 bg-modal " >
-              <div className="bg-white rounded-2xl opacity-100 flex w-1/2 mx-auto my-28 py-10 px-10  justify-center items-center" >
+              <div className="bg-white rounded-2xl opacity-100 flex md:w-1/2 mx-10 md:mx-auto  my-28 py-10 px-10  justify-center items-center" >
                 <form htmlFor="addContact" className="flex flex-col items-center justify-center">
                   <div className="flex flex-col ">
                     <label htmlFor="firstname" className="text-blue-500">First Name</label>
-                    <input type="text" name="firstname" id="firstname" placeholder="Enter first Name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.firstname} onChange={(e)=> setContacts({...contacts, firstname:e.target.value})} />
+                    <input type="text" name="firstname" id="firstname" placeholder="Enter first Name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.firstname} onChange={(e)=> setContacts({...contacts, firstName:e.target.value})} />
                   </div>
                   <div className="flex flex-col ">
                     <label htmlFor="lastname" className="text-blue-500">Last Name</label>
-                    <input type="text" name="lastname" id="lastname" placeholder="Enter individual's name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.lastname} onChange={(e)=> setContacts({...contacts, lastname:e.target.value})} />
+                    <input type="text" name="lastname" id="lastname" placeholder="Enter individual's name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.lastname} onChange={(e)=> setContacts({...contacts, lastName:e.target.value})} />
                   </div>
                   <div className="flex flex-col ">
                     <label htmlFor="phone" className="text-blue-500">Phone number</label>
                     <input type="number" name="phone" id="phone" value={contacts.phone_number} onChange={(e)=>setContacts({...contacts, phone_number:e.target.value})} placeholder="Enter individual's number" className=" w-full shadow rounded-xl px-7 py-3" />
+                    <p className='text-red-500' >{err} </p>
                   </div>
                   <button onClick={()=>setShowAddForm(false)} className="bg-red-500 px-5 py-2 my-5 rounded-md text-white" >Cancel </button>
                   {isEdit ? <button  onClick={()=>handleSubmit(theContact.id)} className="bg-blue-500 px-5 py-2 my-5 rounded-md text-white" >Update </button>

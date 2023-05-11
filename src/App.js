@@ -43,6 +43,11 @@ function App(props) {
   )
   .catch(error => console.error(error));
   setShowAddForm(false)
+  setContacts({
+    firstName: '',
+    lastName: '',
+    phone_number: '',
+  })
 
     }
 
@@ -74,7 +79,7 @@ function App(props) {
             <div className="bg-blue-500 rounded-md px-2 md:px-4 py-2 text-white">
               <AddButton  handleAddContact={handleAddContact} />
             </div>
-            {showAddForm &&
+            {/* {showAddForm &&
             <div className="fixed w-full h-full inset-0 bg-modal " >
               <div className="bg-white rounded-2xl opacity-100 flex w-1/2 mx-auto my-28 py-10 px-10  justify-center items-center" >
                 <form htmlFor="addContact" className="flex flex-col items-center justify-center">
@@ -99,7 +104,7 @@ function App(props) {
               </div>
 
             </div>
-}
+} */}
 
           </div>
         </div>
@@ -117,7 +122,7 @@ function App(props) {
 
 
         <div className="my-4 w-full max-w-screen-lg">
-          <Contact contacts={contacts} setIsedit={setIsedit} setContacts={setContacts} setShowAddForm={setShowAddForm} />
+          <Contact contacts={contacts} isEdit={isEdit} closemodal={closemodal} setIsedit={setIsedit} setContacts={setContacts} showAddForm={showAddForm} setShowAddForm={setShowAddForm} />
         </div>
 
       </div>

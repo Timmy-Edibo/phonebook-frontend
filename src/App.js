@@ -16,6 +16,7 @@ function App(props) {
       phone_number: 123,
     }
   ])
+  const [isEdit, setIsedit] = useState(false)
   function handleSearchChange(event) {
     setSearchValue(event.target.value);
   }
@@ -45,10 +46,19 @@ function App(props) {
 
     }
 
-  function handleSearch() {
-    // Perform some action when the search button is clicked
-  }
-
+    function handleSearch(e) {
+      setSearchValue(e.target.value);
+      fetch('https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({lastname: searchValue})
+      })
+      .then(response => response.json())
+      .then(data => setContacts(data.data))
+      .catch(error => console.error(error));
+    }
   return (
     <div className="App px-5 py-2">
       <div className='flex flex-col items-center justify-center bg-gray-100'>
@@ -70,17 +80,21 @@ function App(props) {
                 <form htmlFor="addContact" className="flex flex-col items-center justify-center">
                   <div className="flex flex-col ">
                     <label htmlFor="name" className="text-blue-500">First Name</label>
-                    <input type="text" name="name" id="name" placeholder="Enter first Name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.firstName} onChange={(e)=> setContacts({...contacts, firstName:e.target.value})} />
+                    <input type="text" name="name" id="name" placeholder="Enter first Name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.firstname} onChange={(e)=> setContacts({...contacts, firstName:e.target.value})} />
                   </div>
                   <div className="flex flex-col ">
                     <label htmlFor="name" className="text-blue-500">Last Name</label>
-                    <input type="text" name="name" id="name" placeholder="Enter individual's name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.lastName} onChange={(e)=> setContacts({...contacts, lastName:e.target.value})} />
+                    <input type="text" name="name" id="name" placeholder="Enter individual's name" className="w-full shadow rounded-xl px-7 py-3" value={contacts.lastname} onChange={(e)=> setContacts({...contacts, lastName:e.target.value})} />
                   </div>
                   <div className="flex flex-col ">
                     <label htmlFor="phone" className="text-blue-500">Phone number</label>
                     <input type="number" name="phone" id="phone" value={contacts.phone_number} onChange={(e)=>setContacts({...contacts, phone_number:e.target.value})} placeholder="Enter individual's number" className=" w-full shadow rounded-xl px-7 py-3" />
                   </div>
+                  <button onClick={()=>setShowAddForm(false)} className="bg-red-500 px-5 py-2 my-5 rounded-md text-white" >Cancel </button>
+                  {isEdit ? <button onClick={closemodal} className="bg-blue-500 px-5 py-2 my-5 rounded-md text-white" >Update </button>
+                  :
                   <button onClick={closemodal} className="bg-blue-500 px-5 py-2 my-5 rounded-md text-white" >Save </button>
+            }
                 </form>
               </div>
 
@@ -93,9 +107,9 @@ function App(props) {
 
           <div className="my-4 w-full max-w-screen-lg rounded-md shadow-md border-black">
             <SearchButton 
-              onChange={handleSearchChange} 
+              onChange={handleSearch} 
               value={searchValue} 
-              onClick={handleSearch} 
+              // onClick={handleSearch} 
             />
           </div>
 
@@ -103,7 +117,7 @@ function App(props) {
 
 
         <div className="my-4 w-full max-w-screen-lg">
-          <Contact />
+          <Contact contacts={contacts} setIsedit={setIsedit} setContacts={setContacts} setShowAddForm={setShowAddForm} />
         </div>
 
       </div>

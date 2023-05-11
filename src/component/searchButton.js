@@ -8,6 +8,7 @@ function SearchButton(props) {
         className="w-full h-12 px-4 pr-12 text-gray-700 placeholder-gray-500 bg-white border border-black rounded-md shadow-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
         onChange={props.onChange}
         value={props.value}
+        onClick={props.onClick}
         placeholder="Search for contact by lastname..."
       />
       <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">

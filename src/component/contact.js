@@ -1,9 +1,11 @@
 import { ReactComponent as BasketIcon } from '../assets/basket.svg';
 import { ReactComponent as PhoneCallIcon } from '../assets/phonecall.svg';
 import { useState, useEffect } from 'react';
+import { AiOutlineEdit} from 'react-icons/ai';
 
-function Contact() {
+function Contact({contacts, setIsedit, setContacts, setShowAddForm}) {
 const [theContact, setTheContact]= useState([])
+const [searchValue, setSearchValue] = useState('');
   useEffect(() => {
     fetch('https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/list-all')
       .then(response => response.json())
@@ -21,8 +23,103 @@ const [theContact, setTheContact]= useState([])
       })
       .catch(error => console.error(error));
   };
+  const handleSearchTermChange = (event) => {
+    const url = 'https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/search';
+    const data = {
+      lastname: event.target.value
+    };
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    fetch(url, options)
+      .then(response => response.json())
+      .then(data => setTheContact(data.data))
+      .catch(error => console.error(error));
+  };
+  const handleEditContact = (id) => {
+    setIsedit(true)
+    setShowAddForm(true)
+    const contactToEdit = theContact.find(contact => contact.id === id);
+    console.log("---->", contactToEdit);
+    if (contactToEdit) {
+      setContacts({
+        ...contacts,
+        firstname: contactToEdit.firstname,
+        lastname: contactToEdit.lastname,
+        phone_number: contactToEdit.phone_number,
+      });
+  }
+  }
+
+  const handleSubmit = (id) => {
+    const url = `https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/update/${id}`;
+    const data = {
+      firstname: contacts.firstname,
+      lastname: contacts.lastname,
+      phone_number: contacts.phone_number,
+    };
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    fetch(url, options)
+      .then(response => response.json())
+      .then(data => {
+        // Update the contact in the state
+        const contactToEdit = theContact.find(contact => contact.id === id);
+        const updatedContact = {
+          id: contactToEdit.id,
+          firstname: data.firstname,
+          lastname: data.lastname,
+          phone_number: data.phone_number,
+        };
+        const updatedContacts = [...theContact];
+        const index = updatedContacts.findIndex(contact => contact.id === id);
+        updatedContacts[index] = updatedContact;
+        setTheContact(updatedContacts);
+
+        // Reset the form and close the modal
+        setContacts({
+          firstname: '',
+          lastname: '',
+          phone_number: '',
+        });
+        setShowAddForm(false);
+      })
+      .catch(error => console.error(error));
+  };
+
+
+
+  // 
   return (
     <>
+
+        <div className="">
+      <input
+        type="text"
+        className="w-full h-12 px-4 pr-12 text-gray-700 placeholder-gray-500 bg-white border border-black rounded-md shadow-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300"
+        onChange={handleSearchTermChange}
+        value={searchValue}
+        placeholder="Search for contact by lastname..."
+      />
+      <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+        <svg
+          className="w-6 h-6 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        ></svg>
+      </div>
+    </div>
     
     <div>
       {theContact && theContact.map((contact) => {
@@ -39,10 +136,15 @@ const [theContact, setTheContact]= useState([])
       <div className="flex flex-col">
         <div className="flex items-center justify-between mb-2">
             <h3 className="text-3xl font-bold">{contact.firstname} {contact.lastname}</h3>
+            <div className='flex gap-3' >
+              <button className="bg-blue-500 rounded-lg w-8 h-8 flex items-center justify-center">
+                <AiOutlineEdit onClick={()=> handleEditContact(contact.id)} className="w-4 h-4 text-white" />
+              </button>
             <button  onClick={() => handleDeleteContact(contact.id)} 
             className="bg-red-500 rounded-lg w-8 h-8 flex items-center justify-center ml-auto">
               <BasketIcon className="w-4 h-4 text-white" />
             </button>
+            </div>
         </div>
         <div className="flex items-center mb-2">
             <span className="mr-2"><PhoneCallIcon /></span>
@@ -66,21 +168,22 @@ export default Contact;
 
 
 
-{/* <br></br>
-    {contacts.map((contact) => () => {
-      <div className="bg-white rounded-lg shadow-md p-4">
-      <div className="flex flex-col">
-        <div className="flex items-center justify-between mb-2">
-            <h3 className="text-3xl font-bold">{contact.firstname} {contact.lastname}</h3>
-            <button onClick={props.onClick} 
-            className="bg-red-500 rounded-lg w-8 h-8 flex items-center justify-center ml-auto">
-              <BasketIcon className="w-4 h-4 text-white" />
-            </button>
-        </div>
-        <div className="flex items-center mb-2">
-            <span className="mr-2"><PhoneCallIcon /></span>
-            <h3 className="text-gray-600">{props.phoneNumber}</h3>
-        </div>
-      </div>
-    </div>
-    })} */}
+
+// const handleEditContact = (id) => {
+  //   setShowAddForm(true)
+  //   console.log("---->", theContact);
+  //   console.log("---->", id);
+  //   if(theContact.id === id){
+  //     console.log("---->", theContact.id);
+  //     console.log("---->", theContact.firstName);
+  //   }
+    // fetch(`https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/edit/${id}`, {
+    //   method: 'PUT'
+    // })
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     const updatedContacts = theContact.filter(contact => contact.id !== id);
+    //     setTheContact(updatedContacts);
+    //   })
+    //   .catch(error => console.error(error));
+  // }

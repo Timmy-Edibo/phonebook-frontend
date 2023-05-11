@@ -7,6 +7,8 @@ function Contact({contacts, setIsedit,isEdit,closemodal, err, setContacts, showA
 const [theContact, setTheContact]= useState([])
 const [searchValue, setSearchValue] = useState('');
 const [isfilter, setIsfilter] = useState([])
+
+
   useEffect(() => {
     fetch('https://phonebook-backend-production-a67d.up.railway.app/api/v1/phonebook/list-all')
       .then(response => response.json())
@@ -145,7 +147,7 @@ const [isfilter, setIsfilter] = useState([])
 }
     
     <div>
-      {isfilter === " "? theContact.map((contact) => {
+      {isfilter ===0  || searchValue === "" ?  theContact.map((contact) => {
         const phoneNumberArray = contact.phone_number.split('');
   
         // Insert a hyphen after every 3 digits
